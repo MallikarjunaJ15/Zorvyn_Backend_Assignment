@@ -4,6 +4,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
+import userRoutes from "./routes/user.route.js";
+
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -15,11 +17,11 @@ app.use(
     credentials: true,
   }),
 );
+app.use("/api/v1/user", userRoutes);
 const port = process.env.PORT;
 app.get("/hello", (req, res) => {
   res.send("iam ready");
 });
-
 const startServer = async () => {
   try {
     await db();

@@ -1,57 +1,65 @@
-import User from "../model/user.schema.js";
-import bcrypt from "bcryptjs";
-import { generateToken } from "../utils/generateToken.js";
-
+import {
+  registerUser,
+  loginUser,
+  getUserByIdService,
+  updateUserRoleService,
+  deleteUserService,
+  getAllUsersService,
+} from "../services/auth.service.js";
 export const register = async (req, res) => {
   try {
-    const { firstname, lastname, email, password } = req.body;
-    if (!firstname || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
-    }
-    const hashedPassword = await bcrypt.hash(password, 12);
-    const user = await User.create({
-      fullname: { firstname, lastname },
-      email,
-      password: hashedPassword,
-    });
-
-    const token = generateToken(user);
-
-    res.status(201).json({
-      message: "User registered successfully",
-      token,
-    });
+    const data = await registerUser(req.body);
+    res.status(201).json(data);
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(400).json({ message: error.message });
   }
 };
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-    const user = await User.findOne({ email }).select("+password");
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    const token = generateToken(user);
-
-    res.status(200).json({
-      message: "Login successful",
-      token,
-    });
+    const data = await loginUser(req.body);
+    res.status(200).json(data);
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(401).json({ message: error.message });
+  }
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const data = await getAllUsersService();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const data = await getUserByIdService(userId);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(401).json({ message: error.message });
+  }
+};
+
+export const updateRole = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { role } = req.body;
+    const data = await updateUserRoleService(userId, role);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const data = await deleteUserService(userId);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
