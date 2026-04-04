@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import userRoutes from "./routes/user.route.js";
-
+import transactionRoutes from "./routes/transaction.route.js";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -18,6 +18,7 @@ app.use(
   }),
 );
 app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/transaction", transactionRoutes);
 const port = process.env.PORT;
 app.get("/hello", (req, res) => {
   res.send("iam ready");

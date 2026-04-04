@@ -1,7 +1,6 @@
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 import User from "../model/user.schema.js";
-import Transaction from "../model/transaction.schema.js";
 export const registerUser = async ({
   firstname,
   lastname,
