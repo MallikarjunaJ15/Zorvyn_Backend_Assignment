@@ -6,6 +6,8 @@ import cors from "cors";
 
 import userRoutes from "./routes/user.route.js";
 import transactionRoutes from "./routes/transaction.route.js";
+import dashBoardRoutes from "./routes/dashboard.route.js";
+import errorMiddleware from "./middleware/error.middleware.js";
 dotenv.config();
 const app = express();
 app.use(express.json());
@@ -19,6 +21,8 @@ app.use(
 );
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/transaction", transactionRoutes);
+app.use("/api/v1/dashboard", dashBoardRoutes);
+app.use(errorMiddleware)
 const port = process.env.PORT;
 app.get("/hello", (req, res) => {
   res.send("iam ready");

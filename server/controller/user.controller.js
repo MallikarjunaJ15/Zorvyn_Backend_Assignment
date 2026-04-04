@@ -5,6 +5,7 @@ import {
   updateUserRoleService,
   deleteUserService,
   getAllUsersService,
+  getMeService,
 } from "../services/auth.service.js";
 export const register = async (req, res) => {
   try {
@@ -58,6 +59,15 @@ export const deleteUser = async (req, res) => {
   try {
     const { userId } = req.params;
     const data = await deleteUserService(userId);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+export const getMe = async (req, res) => {
+  try {
+    const data = await getMeService(req.user.userId);
     res.status(200).json(data);
   } catch (error) {
     res.status(400).json({ message: error.message });

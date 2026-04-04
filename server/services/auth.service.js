@@ -84,3 +84,10 @@ export const deleteUserService = async (userId) => {
   if (!user) throw new Error("User not found");
   return { message: "User deactivated successfully" };
 };
+export const getMeService = async (userId) => {
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
+};

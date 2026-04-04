@@ -9,6 +9,7 @@ import {
   getUserById,
   updateRole,
   deleteUser,
+  getMe,
 } from "../controller/user.controller.js";
 
 const router = express.Router();
@@ -16,6 +17,7 @@ const router = express.Router();
 // PUBLIC
 router.post("/register", register);
 router.post("/login", login);
+router.get("/me", isAuthenticated, getMe);
 
 // ADMIN ONLY
 router.get("/users", isAuthenticated, authorizeRoles("admin"), getAllUsers);
