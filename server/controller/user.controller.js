@@ -9,6 +9,7 @@ import {
 } from "../services/auth.service.js";
 export const register = async (req, res) => {
   try {
+    console.log(req.body)
     const data = await registerUser(req.body);
     res.status(201).json(data);
   } catch (error) {

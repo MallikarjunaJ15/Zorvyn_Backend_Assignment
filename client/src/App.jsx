@@ -1,11 +1,43 @@
-import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Dashboard from "./page/Dashboard";
-import Sidebar from "./component/Sidebar";
+import Dashboard from "./pages/Dashboard";
+import Layout from "./Layout/Layout";
+import Transactions from "./pages/Transactions";
+import Users from "./pages/Users";
+import Profile from "./pages/Profile";
+import Auth from "./pages/Auth";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 const routes = createBrowserRouter([
-  { path: "/", element: <Dashboard /> },
-  { path: "/side", element: <Sidebar /> },
+  {
+    path: "/",
+    element: <Auth />,
+  },
+  {
+    path: "/app",
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
+    children: [
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "transactions",
+        element: <Transactions />,
+      },
+      {
+        path: "users",
+        element: <Users />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+    ],
+  },
 ]);
 
 const App = () => {
