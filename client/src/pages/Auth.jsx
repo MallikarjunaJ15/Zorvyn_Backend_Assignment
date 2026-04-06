@@ -17,10 +17,10 @@ const Auth = () => {
     email: "",
     password: "",
   });
-  console.log(input);
   const [registerUser, { data, isSuccess, isError }] =
     useRegisterUserMutation();
-  const [loginUser] = useLoginUserMutation();
+  const [loginUser, { isSuccess: loginSuccess, isError: loginError }] =
+    useLoginUserMutation();
   useEffect(() => {
     if (isSuccess) {
       navigate("/app");
@@ -29,6 +29,14 @@ const Auth = () => {
       alert("Something went wrong");
     }
   }, [data, isSuccess, isError]);
+  useEffect(() => {
+    if (loginSuccess) {
+      navigate("/app");
+    }
+    if(loginError){
+       alert("Error")
+    }
+  }, [loginSuccess, loginError]);
   const handleAuth = async (mode, input) => {
     if (mode === "login") {
       await loginUser({

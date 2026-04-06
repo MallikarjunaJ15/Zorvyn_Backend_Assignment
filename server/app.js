@@ -3,7 +3,6 @@ import { db } from "./config/db.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-
 import userRoutes from "./routes/user.route.js";
 import transactionRoutes from "./routes/transaction.route.js";
 import dashBoardRoutes from "./routes/dashboard.route.js";
@@ -15,14 +14,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.CLIENTURI,
     credentials: true,
   }),
 );
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/transaction", transactionRoutes);
 app.use("/api/v1/dashboard", dashBoardRoutes);
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 const port = process.env.PORT;
 app.get("/hello", (req, res) => {
   res.send("iam ready");

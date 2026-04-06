@@ -6,7 +6,10 @@ import Users from "./pages/Users";
 import Profile from "./pages/Profile";
 import Auth from "./pages/Auth";
 import ProtectedRoute from "./routes/ProtectedRoute";
-
+import { useGetMeQuery } from "./redux/api/authApi";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setAuthChecked, setUser } from "./redux/app/authSlice";
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -41,6 +44,18 @@ const routes = createBrowserRouter([
 ]);
 
 const App = () => {
+  const { data, isLoading } = useGetMeQuery();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (data) {
+      dispatch(setUser(data));
+    } else if (!isLoading) {
+      dispatch(setAuthChecked());
+    }
+  }, [data]);
+  if (isLoading) {
+    return <div className="text-white">Loading...</div>;
+  }
   return <RouterProvider router={routes} />;
 };
 

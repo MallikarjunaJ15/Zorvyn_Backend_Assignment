@@ -1,0 +1,161 @@
+# 📡 API Documentation
+
+## Base URL
+
+```
+/api/v1
+```
+
+---
+
+# 🔐 Authentication
+
+### ➤ Register
+
+```
+POST /user/register
+```
+
+### ➤ Login
+
+```
+POST /user/login
+```
+
+### ➤ Get Current User
+
+```
+GET /user/me
+Authorization: Bearer <token>
+```
+
+---
+
+# 👥 User Management (Admin)
+
+### ➤ Get All Users
+
+```
+GET /user/users
+```
+
+### ➤ Get User by ID
+
+```
+GET /user/:userId
+```
+
+### ➤ Update Role
+
+```
+PATCH /user/:userId/role
+```
+
+### ➤ Deactivate User
+
+```
+DELETE /user/:userId
+```
+
+---
+
+# 💸 Transactions
+
+### ➤ Create Transaction
+
+```
+POST /transaction/create
+```
+
+### ➤ Get Transactions (Filters Supported)
+
+```
+GET /transaction
+```
+
+Query Params:
+
+* page
+* limit
+* type
+* category
+* startDate
+* endDate
+* sort
+* search
+
+---
+
+### ➤ Get Transaction by ID
+
+```
+GET /transaction/:transactionId
+```
+
+### ➤ Update Transaction
+
+```
+PATCH /transaction/update/:transactionId
+```
+
+### ➤ Delete Transaction
+
+```
+DELETE /transaction/:transactionId
+```
+
+---
+
+# 📊 Dashboard
+
+### ➤ Summary
+
+```
+GET /dashboard/summary
+```
+
+### ➤ Category Breakdown
+
+```
+GET /dashboard/category-breakdown
+```
+
+### ➤ Monthly Trends
+
+```
+GET /dashboard/monthly-trends
+```
+
+### ➤ Weekly Summary
+
+```
+GET /dashboard/weekly-summary
+```
+
+### ➤ Recent Activity
+
+```
+GET /dashboard/recent-activity
+```
+
+---
+
+# 🔐 Authorization Rules
+
+All protected routes require:
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+---
+
+# 🧠 Notes
+
+* Soft delete implemented (`isDeleted`)
+* Aggregation pipelines power analytics
+* Pagination & filters supported
+* Role-based access enforced
+* Indexed queries for performance
+
+---

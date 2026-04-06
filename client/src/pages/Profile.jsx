@@ -4,12 +4,14 @@ import ProfileTabs from "../components/ProfileTabs";
 import GeneralTab from "../components/GeneralTab";
 import SecurityTab from "../components/SecurityTab";
 import NotificationTab from "../components/NotificationTab";
+import { useGetMeQuery } from "../redux/api/authApi";
 
 const Profile = () => {
   const [tab, setTab] = useState("general");
+  const { data } = useGetMeQuery();
 
   return (
-    <div className="p-4 lg:p-6 space-y-6">
+    <div className="p-4 lg:p-6 space-y-6 text-white">
       <div>
         <p className="text-xs text-emerald-400 tracking-widest">ACCOUNT</p>
         <h1 className="text-3xl lg:text-4xl font-bold">
@@ -17,10 +19,11 @@ const Profile = () => {
         </h1>
       </div>
 
-      <ProfileHeader />
+      <ProfileHeader user={data} />
       <ProfileTabs tab={tab} setTab={setTab} />
+
       <div className="bg-zinc-900 border border-white/10 rounded-xl p-6">
-        {tab === "general" && <GeneralTab />}
+        {tab === "general" && <GeneralTab user={data} />}
         {tab === "security" && <SecurityTab />}
         {tab === "notifications" && <NotificationTab />}
       </div>

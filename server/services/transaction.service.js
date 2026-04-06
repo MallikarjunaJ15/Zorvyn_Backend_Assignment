@@ -1,8 +1,9 @@
 import Transaction from "../model/transaction.schema.js";
 
 export const createTransactionService = async (userId, data) => {
-  const { amount, type, category, note } = data;
-  if (!amount || !type || !category) {
+  const { amount, type, category, note, date } = data;
+  // console.log("data coming",data)
+  if (!amount || !type || !category || !date) {
     throw new Error("All fields required");
   }
   return await Transaction.create({
@@ -11,6 +12,7 @@ export const createTransactionService = async (userId, data) => {
     type,
     category,
     note,
+    date,
   });
 };
 
@@ -74,9 +76,7 @@ export const getTransactionByIdService = async (id) => {
 
 export const updateTransactionService = async (id, data) => {
   const tran = await Transaction.findByIdAndUpdate(id, data, { new: true });
-
   if (!tran) throw new Error("Transaction not found");
-
   return tran;
 };
 export const deleteTransactionService = async (id) => {

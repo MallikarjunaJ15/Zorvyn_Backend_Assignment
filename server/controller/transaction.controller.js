@@ -8,7 +8,9 @@ import {
 
 export const createTransaction = async (req, res) => {
   try {
-    const data = await createTransactionService(req.body);
+    // console.log("Body", req.body);
+    const userId = req.user.userId;
+    const data = await createTransactionService(userId, req.body);
     return res.status(201).json(data);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -33,10 +35,10 @@ export const getTransactionById = async (req, res) => {
   }
 };
 
-export const updateTransaction = async (req) => {
+export const updateTransaction = async (req,res) => {
   try {
-    const { transactioId } = req.params;
-    const data = await updateTransactionService(transactioId, req.body);
+    const { transactionId } = req.params;
+    const data = await updateTransactionService(transactionId, req.body);
     return res.status(201).json(data);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -45,8 +47,8 @@ export const updateTransaction = async (req) => {
 
 export const deleteTransaction = async (req, res) => {
   try {
-    const { transactioId } = req.params;
-    const data = await deleteTransactionService(transactioId);
+    const { transactionId } = req.params;
+    const data = await deleteTransactionService(transactionId);
     return res.status(201).json(data);
   } catch (error) {
     res.status(400).json({ message: error.message });

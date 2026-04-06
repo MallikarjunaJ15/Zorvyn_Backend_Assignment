@@ -3,11 +3,12 @@ import {
   getSummaryService,
   monthlyTrendsService,
   recentActivityService,
+  weeklySummaryService,
 } from "../services/dashboard.service.js";
 
 export const summary = async (req, res) => {
   try {
-    const data = await getSummaryService();
+    const data = await getSummaryService(req.user.userId);
     res.status(201).json(data);
   } catch (error) {
     return res.status(400).json({ message: error.message });
@@ -16,16 +17,16 @@ export const summary = async (req, res) => {
 
 export const categoryWiseTotal = async (req, res) => {
   try {
-    const data = await categoryWiseTotalService();
+    const data = await categoryWiseTotalService(req.user.userId);
     res.status(201).json(data);
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
 };
 
-export const monthlyTrends = async () => {
+export const monthlyTrends = async (req, res) => {
   try {
-    const data = await monthlyTrendsService();
+    const data = await monthlyTrendsService(req.user.userId);
     res.status(201).json(data);
   } catch (error) {
     return res.status(400).json({ message: error.message });
@@ -34,7 +35,7 @@ export const monthlyTrends = async () => {
 
 export const recentActivity = async (req, res) => {
   try {
-    const data = await recentActivityService();
+    const data = await recentActivityService(req.user.userId);
     res.status(201).json(data);
   } catch (error) {
     return res.status(400).json({ message: error.message });
@@ -42,7 +43,7 @@ export const recentActivity = async (req, res) => {
 };
 export const weeklySummary = async (req, res) => {
   try {
-    const data = await weeklySummaryService();
+    const data = await weeklySummaryService(req.user.userId);
     res.status(201).json(data);
   } catch (error) {
     return res.status(400).json({ message: error.message });

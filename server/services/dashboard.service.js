@@ -68,7 +68,16 @@ export const monthlyTrendsService = async (userId) => {
           month: { $month: "$date" },
           year: { $year: "$date" },
         },
-        total: { $sum: "$amount" },
+        income: {
+          $sum: {
+            $cond: [{ $eq: ["$type", "income"] }, "$amount", 0],
+          },
+        },
+        expense: {
+          $sum: {
+            $cond: [{ $eq: ["$type", "expense"] }, "$amount", 0],
+          },
+        },
       },
     },
     {
@@ -90,9 +99,28 @@ export const weeklySummaryService = async (userId) => {
   const sevenDaysAgo = new Date();
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-  return await Transaction.find({
-    user: userId,
-    isDeleted: false,
-    date: { $gte: sevenDaysAgo },
-  });
+  return await Transaction.aggregate([
+    {
+      $match: {
+        user: userId,
+        isDeleted: false,
+        date: { $gte: sevenDaysAgo },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          day: { $dayOfMonth: "$date" },
+          month: { $month: "$date" },
+        },
+        total: { $sum: "$amount" },
+      },
+    },
+    {
+      $sort: {
+        "_id.month": 1,
+        "_id.day": 1,
+      },
+    },
+  ]);
 };

@@ -18,7 +18,7 @@ router.post(
 router.get(
   "/",
   isAuthenticated,
-  authorizeRoles(["admin", "analyst"]),
+  authorizeRoles("admin", "analyst"),
   getAllTransaction,
 );
 

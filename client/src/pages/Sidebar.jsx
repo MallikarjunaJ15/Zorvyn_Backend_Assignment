@@ -1,14 +1,25 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Users, User, Wallet } from "lucide-react";
+import { useLoginUserMutation } from "../redux/api/authApi";
+import { useEffect } from "react";
+import { logout } from "../redux/app/authSlice";
+import { useSelector } from "react-redux";
 
 const Sidebar = ({ mobileView, setMobileView }) => {
+  const { user } = useSelector((store) => store.auth);
   const items = [
-    { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-    { name: "Transactions", path: "/transactions", icon: Wallet },
-    { name: "Users", path: "/users", icon: Users },
-    { name: "Profile", path: "/profile", icon: User },
+    { name: "Dashboard", path: "dashboard", icon: LayoutDashboard },
+    { name: "Transactions", path: "transactions", icon: Wallet },
+    { name: "Users", path: "users", icon: Users },
+    { name: "Profile", path: "profile", icon: User },
   ];
-
+  const navigate = useNavigate();
+  const [logoutuser] = useLoginUserMutation();
+  const handleLogout = async () => {
+    await logoutuser();
+    logout();
+    navigate("/");
+  };
   return (
     <>
       <div className="w-64 h-screen bg-linear-to-b from-black to-zinc-900 border-r border-white/10 flex flex-col justify-between backdrop-blur-xl">
@@ -60,10 +71,14 @@ const Sidebar = ({ mobileView, setMobileView }) => {
           </nav>
         </div>
         <div className="p-4 text-sm text-gray-400 border-t border-white/10">
-          <p>Signed in as</p>
-          <p className="text-white font-semibold">Kael (admin)</p>
+          <p>{user?.fullname?.firstname}</p>
+          <p className="text-white font-semibold">{user.role}</p>
 
-          <button className="mt-3 w-full py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-all">
+          <button 
+            
+            onClick={handleLogout}
+            className="cursor-pointer mt-3 w-full py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-all"
+          >
             Logout
           </button>
         </div>
@@ -75,8 +90,7 @@ const Sidebar = ({ mobileView, setMobileView }) => {
             onClick={() => setMobileView(false)}
           ></div>
 
-          <div className="relative w-64 h-full bg-gradient-to-b from-black to-zinc-900 border-r border-white/10 animate-slideIn">
-        
+          <div className="relative w-64 h-full bg-linear-to-b from-black to-zinc-900 border-r border-white/10 animate-slideIn">
             <div className="flex justify-between items-center p-4 border-b border-white/10">
               <h1 className="text-emerald-400 font-bold">⚡ ZORVYN</h1>
               <X

@@ -1,12 +1,10 @@
 import bcrypt from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 import User from "../model/user.schema.js";
-export const registerUser = async ({
-  firstname,
-  lastname,
-  email,
-  password,
-}) => {
+export const registerUser = async (data) => {
+  const { fullname, email, password } = data;
+  const { firstname, lastname } = fullname;
+  // console.log("SERVICE DATA:", data);
   const existingUser = await User.findOne({ email });
   if (existingUser) {
     throw new Error("User already exists");
